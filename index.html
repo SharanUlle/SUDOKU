@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#05D2E5">
+    <title>Sudoku</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main class="app">
+
+    <!-- ================= HOME ================= -->
+    <section id="home-page" class="home-page">
+        <div class="home-top-bar">
+            <button id="statistics-button" class="home-icon-button" type="button" title="Statistics">🏆</button>
+
+            <div class="home-top-right">
+                <button id="achievements-button" class="home-icon-button" type="button" title="Achievements">👑</button>
+                <button id="settings-button" class="home-icon-button" type="button" title="Settings">⚙</button>
+            </div>
+        </div>
+
+        <div class="home-logo">
+            <h1>SUDOKU</h1>
+        </div>
+
+        <div class="home-actions">
+            <button id="continue-game-button" class="continue-game-button no-game" type="button">
+                <strong>Continue Game</strong>
+                <span id="continue-info">◷ 00:00 - Easy</span>
+            </button>
+
+            <button id="home-new-game-button" class="home-new-game-button" type="button">
+                New Game
+            </button>
+        </div>
+    </section>
+
+    <!-- ================= GAME ================= -->
+    <section id="game-page" class="game-page hidden">
+        <header class="game-header">
+            <button id="home-button" class="back-button" type="button" title="Home">←</button>
+
+            <div class="game-heading">
+                <h1>Sudoku</h1>
+                <p id="difficulty-label">Easy</p>
+            </div>
+
+            <button id="pause-button" class="small-icon-button" type="button" title="Pause">⏸</button>
+        </header>
+
+        <div class="game-info">
+            <div class="info-card">
+                <span>TIME</span>
+                <strong id="timer" class="fixed-number">00:00</strong>
+            </div>
+
+            <div class="info-card">
+                <span>MISTAKES</span>
+                <strong id="mistake-display" class="fixed-number"><span id="mistakes">0</span><span>/3</span></strong>
+            </div>
+        </div>
+
+        <div id="sudoku-board" class="sudoku-board" aria-label="Sudoku board"></div>
+
+        <div class="game-toolbar">
+            <button id="undo-button" type="button">
+                <img src="assets/undo.png" alt="">
+                <span>Undo</span>
+            </button>
+
+            <button id="erase-button" type="button">
+                <img src="assets/eraser.png" alt="">
+                <span>Erase</span>
+            </button>
+
+            <button id="notes-button" type="button">
+                <img src="assets/notes.png" alt="">
+                <span>Notes</span>
+                <small id="notes-status">OFF</small>
+            </button>
+
+            <button id="hint-button" type="button">
+                <span class="hint-icon">💡</span>
+                <span>Hint</span>
+                <small id="hint-count">1</small>
+            </button>
+        </div>
+
+        <div id="number-pad" class="number-pad">
+            <button data-number="1" type="button">1</button>
+            <button data-number="2" type="button">2</button>
+            <button data-number="3" type="button">3</button>
+            <button data-number="4" type="button">4</button>
+            <button data-number="5" type="button">5</button>
+            <button data-number="6" type="button">6</button>
+            <button data-number="7" type="button">7</button>
+            <button data-number="8" type="button">8</button>
+            <button data-number="9" type="button">9</button>
+        </div>
+
+        <p id="message" class="message" aria-live="polite"></p>
+    </section>
+</main>
+
+<!-- ================= MODALS ================= -->
+<div id="difficulty-modal" class="modal">
+    <div class="modal-card">
+        <button class="modal-close" data-close="difficulty-modal" type="button">×</button>
+        <h2>New Game</h2>
+        <p>Choose your difficulty</p>
+
+        <div class="difficulty-options">
+            <button class="difficulty-option" data-new-level="easy" type="button"><strong>Easy</strong><span>Beginner</span></button>
+            <button class="difficulty-option" data-new-level="medium" type="button"><strong>Medium</strong><span>Moderate</span></button>
+            <button class="difficulty-option" data-new-level="hard" type="button"><strong>Hard</strong><span>Challenging</span></button>
+            <button class="difficulty-option" data-new-level="expert" type="button"><strong>Expert</strong><span>Master</span></button>
+        </div>
+    </div>
+</div>
+
+<div id="statistics-modal" class="modal">
+    <div class="modal-card statistics-card">
+        <button class="modal-close" data-close="statistics-modal" type="button">×</button>
+        <h2>Statistics</h2>
+        <p>Your Sudoku progress</p>
+
+        <div class="statistics-tabs">
+            <button class="stats-tab active" data-stats-level="easy" type="button">Easy</button>
+            <button class="stats-tab" data-stats-level="medium" type="button">Medium</button>
+            <button class="stats-tab" data-stats-level="hard" type="button">Hard</button>
+            <button class="stats-tab" data-stats-level="expert" type="button">Expert</button>
+        </div>
+
+        <div id="statistics-content" class="statistics-content"></div>
+        <button id="reset-statistics" class="reset-statistics" type="button">Reset This Difficulty</button>
+    </div>
+</div>
+
+<div id="achievements-modal" class="modal">
+    <div class="modal-card">
+        <button class="modal-close" data-close="achievements-modal" type="button">×</button>
+        <div class="large-modal-icon">👑</div>
+        <h2>Achievements</h2>
+        <div id="achievements-content" class="achievements-content"></div>
+    </div>
+</div>
+
+<div id="settings-modal" class="modal">
+    <div class="modal-card">
+        <button class="modal-close" data-close="settings-modal" type="button">×</button>
+        <h2>Settings</h2>
+
+        <div class="setting-row">
+            <div><strong>Confirm before new game</strong><span>Ask before replacing progress</span></div>
+            <label class="switch"><input id="confirm-new-game" type="checkbox" checked><span class="slider"></span></label>
+        </div>
+
+        <div class="setting-row">
+            <div><strong>Keyboard controls</strong><span>Use number keys and shortcuts</span></div>
+            <label class="switch"><input id="keyboard-controls" type="checkbox" checked><span class="slider"></span></label>
+        </div>
+    </div>
+</div>
+
+<div id="pause-modal" class="modal">
+    <div class="modal-card">
+        <div class="large-modal-icon">⏸</div>
+        <h2>Game Paused</h2>
+        <p>Your progress is safely saved.</p>
+        <button id="resume-button" class="primary-modal-button" type="button">Resume</button>
+    </div>
+</div>
+
+<div id="game-over-modal" class="modal game-over-modal">
+    <div class="modal-card">
+        <div class="large-modal-icon">❌</div>
+        <h2>Game Over</h2>
+        <p>You made all 3 allowed mistakes.</p>
+        <button id="restart-game" class="primary-modal-button" type="button">Restart Game</button>
+        <button id="game-over-home" class="secondary-modal-button" type="button">Back Home</button>
+    </div>
+</div>
+
+<div id="win-modal" class="modal">
+    <div class="modal-card">
+        <div class="large-modal-icon">🎉</div>
+        <h2>Congratulations!</h2>
+        <p>Sudoku solved successfully.</p>
+
+        <div class="result-box">
+            <div><span>TIME</span><strong id="win-time">00:00</strong></div>
+            <div><span>MISTAKES</span><strong id="win-mistakes">0</strong></div>
+        </div>
+
+        <button id="continue-button" class="primary-modal-button" type="button">Back Home</button>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
